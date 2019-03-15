@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../libs/ethereumjs-wallet-0.6.0.min.js"></script>
+  <title>Generate Ethereum Wallet</title>
+</head>
+<body>
+  <h1>Ethereum Wallet Generator</h1>
+  <button onclick="generateWallet()">Generate Ethereum Wallet</button>
+  <div>address: <input id="address" type="text" size="50" readonly=""></div>
+  <div>private key: <input id="private-key" type="text" size="80" readonly=""></div>
+  <div>public key: <input id="public-key" type="text" size="150" readonly=""></div>
+
+  <script>
+    function generateWallet() {
+      let wallet = ethereumjs.Wallet.generate()
+      let address = wallet.getChecksumAddressString()
+      let privateKey = wallet.getPrivateKeyString()
+      let publicKey = wallet.getPublicKeyString()
+      document.getElementById('address').value = address
+      document.getElementById('private-key').value = privateKey
+      document.getElementById('public-key').value = publicKey
+    }
+  </script>
+
+</body>
+</html>
