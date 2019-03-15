@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../libs/ethereumjs-wallet-0.6.0.min.js"></script>
+  <title>Generate Ethereum Wallet</title>
+</head>
+<body>
+  <h1>Ethereum Vanity Wallet Generator</h1>
+  <div>Prefix hex: <input id="prefix"></div>
+  <button onclick="generateWallet()">Generate Ethereum Vanity Wallet</button>
+
+  <div>address: <input id="address" type="text" size="50" readonly=""></div>
+  <div>private key: <input id="private-key" type="text" size="80" readonly=""></div>
+  <div>public key: <input id="public-key" type="text" size="150" readonly=""></div>
+
+  <script>
+    function isHexString(str) {
+      var a = parseInt(str, 16)
+      return (a.toString(16) === str.toLowerCase())
+    }
+
+    function generateWallet() {
+      let prefix = document.getElementById('prefix').value
+      console.log(prefix)
+
+      if (prefix.length < 1) {
+        alert("Enter prefix.")
+        return
+      }
+
+      if (!isHexString(prefix)) {
+        alert("Enter hex")
+        return
+      }
+
+      var wallet = null
+      while (1) {
+        wallet = ethereumjs.Wallet.generate()
+        if (wallet.getChecksumAddressString().startsWith("0x" + prefix)) {
+          alert("found!")
+          break
+        }
+      }
+
+      let address = wallet.getChecksumAddressString()
+      let privateKey = wallet.getPrivateKeyString()
+      let publicKey = wallet.getPublicKeyString()
+      document.getElementById('address').value = address
+      document.getElementById('private-key').value = privateKey
+      document.getElementById('public-key').value = publicKey
+    }
+  </script>
+
+</body>
+</html>
